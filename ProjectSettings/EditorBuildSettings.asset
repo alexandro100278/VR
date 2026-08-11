@@ -7,7 +7,19 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/JuegoRubik.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    guid: 55daccc09a3b69647bbab145b54a3ab3
+  - enabled: 1
+    path: Assets/Scenes/Hub.unity
+    guid: 24000e52a2645c44d96d40c1a718119e
+  - enabled: 1
+    path: Assets/Scenes/VR Memory Game.unity
+    guid: a8578f5cc40b85548a3b371340d5d90b
+  - enabled: 1
+    path: Assets/Scenes/SeleccionRetos.unity
+    guid: 16204bf6579ace44583a41b08b941c8b
+  - enabled: 1
+    path: Assets/Scenes/MathGame.unity
+    guid: 8646020463b6a3d4d95eb9371f4b2626
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 636aead6dcbe25d4c9db468ea608b06d, type: 2}
