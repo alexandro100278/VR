@@ -7,43 +7,56 @@ public class _Card : MonoBehaviour
 {
 
     private int spriteID;
-    //[SerializeField]
     private int id;
-
     private bool flipped;
     private bool turning;
-
-    public Image img;
+    [SerializeField]
+    private UnityEngine.UI.Image img;
 
     private IEnumerator Flip90(Transform thisTransform, float time, bool changeSprite)
     {
-        Quaternion startRotation = thisTransform.rotation;
-        Quaternion endRotation = thisTransform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
-        float rate = 1.0f / time;
-        float t = 0.0f;
-        while (t < 1.0f)
+        Quaternion startRotation = thisTransform.localRotation;
+
+        float elapsed = 0f;
+        bool spriteChanged = false;
+
+        while (elapsed < time)
         {
-            t += Time.deltaTime * rate;
-            thisTransform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+            elapsed += Time.deltaTime;
+
+            float progress = Mathf.Clamp01(elapsed / time);
+            float angle = progress * 180f;
+
+            thisTransform.localRotation =
+                startRotation * Quaternion.AngleAxis(angle, Vector3.up);
+
+            // Cambiar la imagen cuando la carta está de canto
+            if (changeSprite && !spriteChanged && progress >= 0.5f)
+            {
+                flipped = !flipped;
+                ChangeSprite();
+                spriteChanged = true;
+            }
 
             yield return null;
         }
-        //change sprite and flip another 90degree
-        if (changeSprite)
-        {
-            flipped = !flipped;
-            ChangeSprite();
-            StartCoroutine(Flip90(transform, time, false));
-        }
-        else
-            turning = false;
 
+        thisTransform.localRotation =
+            startRotation * Quaternion.AngleAxis(180f, Vector3.up);
+
+        turning = false;
     }
 
     public void Flip()
     {
+        if (turning)
+            return;
+
         turning = true;
-        //AudioPlayer.Instance.PlayAudio(0);
+
+        if (AudioPlayer.Instance != null)
+            AudioPlayer.Instance.PlayAudio(0);
+
         StartCoroutine(Flip90(transform, 0.25f, true));
     }
 
@@ -55,10 +68,12 @@ public class _Card : MonoBehaviour
         else
             img.sprite = _CardGameManager.Instance.CardBack();
     }
+
     public void Inactive()
     {
         StartCoroutine(Fade());
     }
+
     private IEnumerator Fade()
     {
         float rate = 1.0f / 2.5f;
@@ -71,11 +86,13 @@ public class _Card : MonoBehaviour
             yield return null;
         }
     }
+
     public void Active()
     {
         if (img)
             img.color = Color.white;
     }
+
     public int SpriteID
     {
         set
@@ -86,16 +103,20 @@ public class _Card : MonoBehaviour
         }
         get { return spriteID; }
     }
+
     public int ID
     {
         set { id = value; }
         get { return id; }
     }
+
     public void ResetRotation()
     {
-        transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        transform.localRotation = Quaternion.identity;
         flipped = true;
+        ChangeSprite();
     }
+
     public void CardBtn()
     {
         if (flipped || turning) return;
