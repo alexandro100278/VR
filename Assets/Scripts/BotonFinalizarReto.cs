@@ -14,4 +14,15 @@ public class BotonFinalizarReto : MonoBehaviour
 
         reto.TerminarReto();
     }
+
+    public void Seleccionar()
+    {
+        if (reto == null)
+        {
+            Debug.LogError("No se asignó RetoManager.");
+            return;
+        }
+
+        reto.TerminarReto();
+    }
 }

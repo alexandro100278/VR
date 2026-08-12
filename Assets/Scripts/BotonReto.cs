@@ -9,4 +9,9 @@ public class BotonReto : MonoBehaviour
     {
         selector.SeleccionarReto(numeroReto);
     }
+
+    public void Seleccionar()
+    {
+        selector.SeleccionarReto(numeroReto);
+    }
 }
